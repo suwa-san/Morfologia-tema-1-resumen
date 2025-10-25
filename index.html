@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morfología Funcional Deportiva - Tema 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a6bb3 0%, #0d4d8c 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .topics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .topic-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 5px solid #1a6bb3;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .topic-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #1a6bb3;
+        }
+
+        .topic-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h2 {
+            color: #1a6bb3;
+            font-size: 1.8rem;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-section h3 {
+            color: #1a6bb3;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+            border-left: 4px solid #1a6bb3;
+            padding-left: 10px;
+        }
+
+        .info-section p, .info-section ul {
+            margin-bottom: 10px;
+        }
+
+        .info-section ul {
+            padding-left: 20px;
+        }
+
+        .info-section li {
+            margin-bottom: 5px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .topics-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Morfología Funcional Deportiva</h1>
+        <p class="subtitle">Tema 1: Introducción al estudio del organismo humano</p>
+    </header>
+
+    <div class="topics-container" id="topicsContainer">
+        <!-- Los temas se cargarán aquí mediante JavaScript -->
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModal">&times;</button>
+            <div class="modal-header">
+                <h2 id="modalTitle">Título del Tema</h2>
+            </div>
+            <div id="modalBody">
+                <!-- El contenido del tema se cargará aquí -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Universidad Central "Marta Abreu" de Las Villas - Licenciatura en Cultura Física</p>
+    </footer>
+
+    <script>
+        // Datos de los temas
+        const topics = [
+            {
+                id: 1,
+                title: "Introducción a la Morfología",
+                description: "Célula Eucariota, Tejidos Básicos y sus adaptaciones a la actividad física",
+                content: `
+                    <div class="info-section">
+                        <h3>¿Qué es la Morfología?</h3>
+                        <p>Ciencia que estudia la estructura y forma de los organismos vivos, enfocándose en cómo se relaciona la estructura del cuerpo humano con su función, especialmente durante la actividad física.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Célula Eucariota</h3>
+                        <p>Unidad básica de la vida con orgánulos especializados:</p>
+                        <ul>
+                            <li><strong>Núcleo:</strong> Contiene el ADN (material genético)</li>
+                            <li><strong>Mitocondrias:</strong> Producen energía (ATP). Se adaptan aumentando en número y eficiencia con el entrenamiento</li>
+                            <li><strong>Retículo endoplásmico y Aparato de Golgi:</strong> Síntesis y transporte de proteínas</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Diferenciación Celular</h3>
+                        <p>Proceso por el cual las células se especializan para formar diferentes tipos de tejidos.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Tejidos Básicos</h3>
+                        <p>Grupos de células similares que realizan una función específica:</p>
+                        <ul>
+                            <li><strong>Epitelial:</strong> Revestimiento y protección (ej. piel, interior de órganos)</li>
+                            <li><strong>Conectivo:</strong> Sostén y unión (ej. hueso, sangre, cartílago, grasa)</li>
+                            <li><strong>Muscular:</strong> Contracción y movimiento. Se adapta al ejercicio aumentando fuerza y resistencia</li>
+                            <li><strong>Nervioso:</strong> Transmisión de impulsos nerviosos</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                title: "Sistema Nervioso",
+                description: "Clasificación, estructura y función del sistema de control corporal",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Sistema de control y comunicación rápida del cuerpo mediante impulsos nerviosos eléctricos.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <p><strong>Sistema Nervioso Central (SNC):</strong> "Centro de mando". Incluye el Encéfalo y la Médula Espinal.</p>
+                        <p><strong>Sistema Nervioso Periférico (SNP):</strong> "Cableado". Nervios que conectan el SNC con el resto del cuerpo.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Niveles de Organización</h3>
+                        <ul>
+                            <li><strong>Nivel Medular (Médula Espinal):</strong> Conduce información y genera actos reflejos</li>
+                            <li><strong>Nivel Encefálico Inferior:</strong> Controla funciones básicas (Tronco Cerebral), coordinación (Cerebelo) y regulación (Diencéfalo)</li>
+                            <li><strong>Nivel Cortical (Cerebro):</strong> Centro de funciones superiores (pensamiento, memoria, voluntad)</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Permite la percepción del entorno, el procesamiento de información y la ejecución de respuestas motoras. Es fundamental para el aprendizaje y ejecución de habilidades deportivas.</p>
+                    </div>
+                `
+            },
+            {
+                id: 3,
+                title: "Sistema Nervioso Vegetativo",
+                description: "Control involuntario de órganos y glándulas",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Controla las funciones involuntarias de órganos y glándulas (ritmo cardíaco, digestión, sudoración).</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <p>Centros de control en el Hipotálamo y Tronco Cerebral. Se divide en dos sistemas antagónicos:</p>
+                        <ul>
+                            <li><strong>Simpático:</strong> Prepara el cuerpo para la acción ("lucha o huida")</li>
+                            <li><strong>Parasimpático:</strong> Se encarga de la "conservación y descanso"</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Regula automáticamente las funciones vitales durante el reposo y la actividad física, permitiendo al cuerpo adaptarse a diferentes demandas energéticas.</p>
+                    </div>
+                `
+            },
+            {
+                id: 4,
+                title: "Sistemas Sensoriales Especiales",
+                description: "Visión, audición y aparato vestibular",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Captan estímulos específicos del ambiente y los transforman en impulsos nerviosos.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Visión (Ojo):</strong> Retina, cristalino, etc. Transforma ondas de luz en impulsos nerviosos</li>
+                            <li><strong>Audición (Oído):</strong> Tímpano, huesecillos, cóclea. Detecta ondas sonoras</li>
+                            <li><strong>Aparato Vestibular (oído interno):</strong> Detecta posición y movimiento de la cabeza</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Proporcionan información crucial sobre el entorno y la posición corporal, esencial para la coordinación, equilibrio y ejecución precisa de movimientos deportivos.</p>
+                    </div>
+                `
+            },
+            {
+                id: 5,
+                title: "Integración del Sistema Nervioso",
+                description: "Control del tono muscular, equilibrio y postura",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Coordinación de todos los niveles del sistema nervioso para el control motor durante la actividad física.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <p>Interconexión entre:</p>
+                        <ul>
+                            <li>Cerebelo (coordinación)</li>
+                            <li>Aparato vestibular (equilibrio)</li>
+                            <li>Propioceptores (posición corporal)</li>
+                            <li>Corteza motora (movimiento voluntario)</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Permite movimientos coordinados, eficientes y el mantenimiento del equilibrio durante la práctica deportiva, reduciendo el riesgo de lesiones.</p>
+                    </div>
+                `
+            },
+            {
+                id: 6,
+                title: "Sistema Endocrino",
+                description: "Regulación hormonal de las funciones corporales",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Regula las funciones corporales a largo plazo (crecimiento, metabolismo, reproducción) mediante hormonas.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <p>Glándulas endocrinas que liberan hormonas a la sangre:</p>
+                        <ul>
+                            <li><strong>Hipófisis:</strong> "Glándula maestra"</li>
+                            <li><strong>Tiroides:</strong> Controla el metabolismo</li>
+                            <li><strong>Suprarrenales:</strong> Respuesta al estrés</li>
+                            <li><strong>Páncreas (mixta):</strong> Regula glucosa en sangre</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Control Neuro-endocrino</h3>
+                        <p>El Sistema Nervioso (especialmente el hipotálamo) controla y regula al Sistema Endocrino.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Coordina respuestas adaptativas a largo plazo al ejercicio, regulando el metabolismo energético, el crecimiento muscular y las respuestas al estrés físico.</p>
+                    </div>
+                `
+            },
+            {
+                id: 7,
+                title: "Sistemas de Control",
+                description: "Integración entre los sistemas Nervioso y Endocrino",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Mantener el equilibrio interno (homeostasis) mediante la acción coordinada del Sistema Nervioso (respuestas rápidas) y Endocrino (respuestas lentas).</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Ejemplo durante la Actividad Física</h3>
+                        <p>Al empezar a correr, el SN Simpático acelera el corazón de inmediato, mientras que el sistema endocrino libera hormonas como la adrenalina para mantener la energía.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Permite al organismo adaptarse eficientemente a los cambios internos y externos, optimizando el rendimiento deportivo y facilitando la recuperación.</p>
+                    </div>
+                `
+            },
+            {
+                id: 8,
+                title: "Sistema Circulatorio",
+                description: "Transporte de nutrientes, oxígeno y desechos",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Transportar nutrientes, oxígeno, hormonas y desechos por todo el cuerpo.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Corazón:</strong> Músculo potente (miocardio) que actúa como bomba</li>
+                            <li><strong>Vasos Sanguíneos:</strong> Arterias, venas y capilares</li>
+                            <li><strong>Sangre:</strong> Medio de transporte</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Tipos de Circulación</h3>
+                        <ul>
+                            <li><strong>Mayor o Sistémica:</strong> Corazón → Cuerpo → Corazón</li>
+                            <li><strong>Menor o Pulmonar:</strong> Corazón → Pulmones → Corazón</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Adaptaciones a la Actividad Física</h3>
+                        <p>El corazón se hace más fuerte y eficiente (hipertrofia cardíaca), aumenta el volumen de sangre y mejora la red de capilares.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Suministra oxígeno y nutrientes a los músculos activos durante el ejercicio y elimina productos de desecho, siendo crucial para el rendimiento y la recuperación.</p>
+                    </div>
+                `
+            },
+            {
+                id: 9,
+                title: "Sistema Respiratorio",
+                description: "Intercambio de gases: oxígeno y dióxido de carbono",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Intercambiar gases: captar Oxígeno (O₂) y eliminar Dióxido de Carbono (CO₂).</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Vías conductoras:</strong> Fosas nasales, tráquea, bronquios</li>
+                            <li><strong>Zona de intercambio:</strong> Alvéolos pulmonares</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Mecánica de la Respiración</h3>
+                        <p>La ventilación pulmonar (inspiración/espiración) mediante el diafragma y músculos intercostales.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Adaptaciones a la Actividad Física</h3>
+                        <p>Aumenta la capacidad pulmonar, la eficiencia del intercambio gaseoso y la fuerza de los músculos respiratorios.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Proporciona el oxígeno necesario para la producción de energía durante el ejercicio y elimina el CO₂ producido, siendo fundamental para el rendimiento aeróbico.</p>
+                    </div>
+                `
+            },
+            {
+                id: 10,
+                title: "Integración Cardiorrespiratoria",
+                description: "Trabajo conjunto de los sistemas circulatorio y respiratorio",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Trabajo coordinado para suministrar O₂ a los músculos y eliminar CO₂ durante el ejercicio.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Mecanismo</h3>
+                        <p>El aumento de la demanda de O₂ en los músculos activa mecanismos que incrementan la frecuencia cardíaca y respiratoria.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Regulación</h3>
+                        <p>Controlada por el sistema nervioso autónomo (simpático) y quimiorreceptores que detectan cambios en los niveles de O₂ y CO₂.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Permite ajustar el aporte de oxígeno a las demandas metabólicas durante el ejercicio, siendo determinante para la capacidad aeróbica y el rendimiento deportivo.</p>
+                    </div>
+                `
+            },
+            {
+                id: 11,
+                title: "Sistema Digestivo",
+                description: "Procesamiento de alimentos y absorción de nutrientes",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Descomponer los alimentos en nutrientes para su absorción y utilización por el organismo.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Tubo digestivo:</strong> Boca, esófago, estómago, intestino delgado y grueso</li>
+                            <li><strong>Glándulas anexas:</strong> Hígado, páncreas, vesícula biliar</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Progresión Alimentaria</h3>
+                        <p>Ingestión → digestión → absorción (principalmente en intestino delgado) → egestión.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Proporciona los nutrientes y energía necesarios para la actividad física, la recuperación y las adaptaciones al entrenamiento.</p>
+                    </div>
+                `
+            },
+            {
+                id: 12,
+                title: "Sistema Urinario",
+                description: "Filtración sanguínea y eliminación de desechos",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Filtrar la sangre para eliminar desechos (urea), regular el agua, electrolitos y el pH sanguíneo.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Riñones:</strong> Filtran y forman la orina</li>
+                            <li><strong>Uréteres:</strong> Conducen la orina a la vejiga</li>
+                            <li><strong>Vejiga:</strong> Almacena la orina</li>
+                            <li><strong>Uretra:</strong> Elimina la orina al exterior</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Formación de la Orina</h3>
+                        <p>Proceso de filtración, reabsorción y secreción en las nefronas de los riñones.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Modificaciones durante la Actividad Física</h3>
+                        <p>El flujo de sangre a los riñones disminuye temporalmente y se eliminan más desechos a través del sudor, concentrando la orina.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Mantiene el equilibrio hídrico y electrolítico durante el ejercicio, crucial para la hidratación y prevención de calambres musculares.</p>
+                    </div>
+                `
+            },
+            {
+                id: 13,
+                title: "Integración de Sistemas de Control",
+                description: "Regulación de los sistemas digestivo y urinario",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Coordinación entre los sistemas de control (nervioso y endocrino) con los sistemas digestivo y urinario.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Mecanismos de Regulación</h3>
+                        <ul>
+                            <li><strong>Sistema Nervioso Autónomo:</strong> Regula la motilidad digestiva</li>
+                            <li><strong>Sistema Endocrino:</strong> Regula hambre/saciedad y balance hídrico (hormona antidiurética)</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Medidas Higiénicas</h3>
+                        <p>Respetar tiempos de digestión antes de hacer actividad física y mantener hidratación adecuada antes, durante y después del ejercicio.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia</h3>
+                        <p>Garantiza que los procesos digestivos y de eliminación se adapten a las demandas del ejercicio, optimizando el rendimiento y previniendo problemas gastrointestinales.</p>
+                    </div>
+                `
+            }
+        ];
+
+        // Cargar los temas en el contenedor
+        const topicsContainer = document.getElementById('topicsContainer');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModal = document.getElementById('closeModal');
+
+        // Función para mostrar los temas
+        function displayTopics() {
+            topics.forEach(topic => {
+                const topicCard = document.createElement('div');
+                topicCard.className = 'topic-card';
+                topicCard.innerHTML = `
+                    <h2>${topic.title}</h2>
+                    <p>${topic.description}</p>
+                `;
+                
+                topicCard.addEventListener('click', () => {
+                    openModal(topic);
+                });
+                
+                topicsContainer.appendChild(topicCard);
+            });
+        }
+
+        // Función para abrir el modal con la información del tema
+        function openModal(topic) {
+            modalTitle.textContent = topic.title;
+            modalBody.innerHTML = topic.content;
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Evitar scroll en el fondo
+        }
+
+        // Función para cerrar el modal
+        function closeModalFunc() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restaurar scroll
+        }
+
+        // Event listeners
+        closeModal.addEventListener('click', closeModalFunc);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModalFunc();
+            }
+        });
+
+        // Cerrar modal con tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModalFunc();
+            }
+        });
+
+        // Inicializar la página
+        displayTopics();
+    </script>
+</body>
+</html>
