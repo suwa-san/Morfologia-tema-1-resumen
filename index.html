@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Morfología Funcional Deportiva - Tema 1</title>
+    <meta name="description" content="Sitio educativo sobre Morfología Funcional Deportiva">
     <style>
-        /* ===== RESET Y CONFIGURACIONES GLOBALES ===== */
-        /* Elimina márgenes y rellenos por defecto y establece box-sizing para facilitar el diseño */
+        /* ===== ESTILOS GLOBALES ===== */
+        /* Reset de márgenes y configuración base para consistencia en todos los navegadores */
         * {
             margin: 0;
             padding: 0;
@@ -14,18 +15,17 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* ===== ESTILOS GENERALES DEL CUERPO ===== */
+        /* Estilos generales del cuerpo de la página */
         body {
             background-color: #f5f7fa;
             color: #333;
             line-height: 1.6;
             padding: 20px;
-            /* Oculta el scroll hasta que se cargue completamente el contenido */
             overflow: hidden;
         }
 
         /* ===== PANTALLA DE CARGA ===== */
-        /* Superposición que cubre toda la pantalla durante la carga */
+        /* Overlay que cubre toda la pantalla durante la carga inicial */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -41,7 +41,7 @@
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
-        /* Spinner de carga animado */
+        /* Animación de spinner circular para indicar carga */
         .spinner {
             width: 50px;
             height: 50px;
@@ -52,20 +52,19 @@
             margin-bottom: 20px;
         }
 
-        /* Animación para girar el spinner */
+        /* Definición de la animación del spinner */
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
-        /* Texto de la pantalla de carga */
+        /* Texto informativo durante la carga */
         .loading-text {
             color: white;
             font-size: 1.2rem;
         }
 
         /* ===== ENCABEZADO PRINCIPAL ===== */
+        /* Cabecera de la página con gradiente y sombra */
         header {
             text-align: center;
             margin-bottom: 30px;
@@ -76,17 +75,20 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
+        /* Título principal */
         h1 {
             font-size: 2.2rem;
             margin-bottom: 10px;
         }
 
+        /* Subtítulo debajo del título principal */
         .subtitle {
             font-size: 1.2rem;
             opacity: 0.9;
         }
 
-        /* ===== CONTENEDOR DE TARJETAS DE TEMAS ===== */
+        /* ===== CONTENEDOR DE TARJETAS ===== */
+        /* Grid responsivo para organizar las tarjetas de temas */
         .topics-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -95,7 +97,8 @@
             margin: 0 auto;
         }
 
-        /* ===== ESTILOS DE TARJETAS INDIVIDUALES ===== */
+        /* ===== TARJETAS INDIVIDUALES ===== */
+        /* Estilo base para cada tarjeta de tema */
         .topic-card {
             background-color: white;
             border-radius: 10px;
@@ -108,25 +111,38 @@
             overflow: hidden;
         }
 
-        /* Efecto hover para las tarjetas */
+        /* Tarjeta especial para medidas higiénicas con color diferente */
+        .topic-card.highlight {
+            border-left: 5px solid #28a745;
+            background: linear-gradient(135deg, #f8fff9 0%, #e8f5e9 100%);
+        }
+
+        /* Efecto al pasar el cursor sobre las tarjetas */
         .topic-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
         }
 
+        /* Título dentro de cada tarjeta */
         .topic-card h2 {
             font-size: 1.4rem;
             margin-bottom: 10px;
             color: #1a6bb3;
         }
 
+        /* Color especial para el título de medidas higiénicas */
+        .topic-card.highlight h2 {
+            color: #28a745;
+        }
+
+        /* Descripción dentro de cada tarjeta */
         .topic-card p {
             color: #666;
             font-size: 0.95rem;
         }
 
         /* ===== MODAL (VENTANA EMERGENTE) ===== */
-        /* Fondo oscuro detrás del modal */
+        /* Fondo oscuro semitransparente del modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -143,13 +159,13 @@
             transition: all 0.3s ease;
         }
 
-        /* Estado activo del modal */
+        /* Estado activo del modal - visible */
         .modal-overlay.active {
             opacity: 1;
             visibility: visible;
         }
 
-        /* Contenido principal del modal */
+        /* Contenedor del contenido del modal */
         .modal-content {
             background-color: white;
             border-radius: 10px;
@@ -164,12 +180,12 @@
             transition: transform 0.3s ease;
         }
 
-        /* Efecto de aparición del modal */
+        /* Efecto de aparición del modal cuando está activo */
         .modal-overlay.active .modal-content {
             transform: translateY(0);
         }
 
-        /* Botón de cierre del modal */
+        /* Botón para cerrar el modal */
         .close-btn {
             position: absolute;
             top: 15px;
@@ -194,44 +210,86 @@
             color: #333;
         }
 
-        /* Encabezado del modal */
+        /* Cabecera del modal con el título */
         .modal-header {
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid #eee;
         }
 
+        /* Título dentro del modal */
         .modal-header h2 {
             color: #1a6bb3;
             font-size: 1.8rem;
         }
 
-        /* Secciones de información dentro del modal */
-        .info-section {
-            margin-bottom: 25px;
+        /* Color especial para el título de medidas higiénicas en el modal */
+        .modal-header.highlight h2 {
+            color: #28a745;
         }
 
+        /* ===== SECCIONES DE INFORMACIÓN ===== */
+        /* Contenedor para cada sección de información dentro del modal */
+        .info-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1a6bb3;
+        }
+
+        /* Estilo especial para secciones de medidas higiénicas */
+        .info-section.highlight {
+            background: #e8f5e9;
+            border-left: 4px solid #28a745;
+        }
+
+        /* Título de cada sección de información */
         .info-section h3 {
             color: #1a6bb3;
             margin-bottom: 10px;
             font-size: 1.3rem;
-            border-left: 4px solid #1a6bb3;
-            padding-left: 10px;
         }
 
+        /* Color especial para títulos en secciones de medidas higiénicas */
+        .info-section.highlight h3 {
+            color: #28a745;
+        }
+
+        /* Párrafos y listas dentro de las secciones de información */
         .info-section p, .info-section ul {
             margin-bottom: 10px;
         }
 
+        /* Listas dentro de las secciones */
         .info-section ul {
             padding-left: 20px;
         }
 
+        /* Elementos de lista individuales */
         .info-section li {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        /* ===== ELEMENTOS DESTACADOS ===== */
+        /* Estilo para información importante o destacada */
+        .highlight-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+            margin: 15px 0;
+        }
+
+        /* Estilo especial para medidas higiénicas destacadas */
+        .highlight-box.health {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
         }
 
         /* ===== PIE DE PÁGINA ===== */
+        /* Sección final de la página */
         footer {
             text-align: center;
             margin-top: 40px;
@@ -240,7 +298,8 @@
             font-size: 0.9rem;
         }
 
-        /* ===== MEDIA QUERIES PARA DISPOSITIVOS MÓVILES ===== */
+        /* ===== DISEÑO RESPONSIVE ===== */
+        /* Ajustes para dispositivos móviles y tablets */
         @media (max-width: 768px) {
             .topics-container {
                 grid-template-columns: 1fr;
@@ -250,11 +309,15 @@
                 width: 95%;
                 padding: 20px;
             }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Pantalla de carga que se muestra mientras se carga el contenido -->
+    <!-- Pantalla de carga que se muestra inicialmente -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
         <p class="loading-text">Cargando contenido...</p>
@@ -264,83 +327,74 @@
     <header>
         <h1>Morfología Funcional Deportiva</h1>
         <p class="subtitle">Tema 1: Introducción al estudio del organismo humano</p>
+			<p class="subtitle">Por: Suwa-san</p>
     </header>
 
-    <!-- Contenedor donde se mostrarán todas las tarjetas de temas -->
+    <!-- Contenedor donde se insertarán las tarjetas de temas dinámicamente -->
     <div class="topics-container" id="topicsContainer">
-        <!-- Las tarjetas de temas se generarán dinámicamente con JavaScript -->
+        <!-- Las tarjetas se generan mediante JavaScript -->
     </div>
 
-    <!-- Modal (ventana emergente) para mostrar información detallada de cada tema -->
+    <!-- Modal para mostrar información detallada de cada tema -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <!-- Botón para cerrar el modal -->
             <button class="close-btn" id="closeModal">&times;</button>
-            <div class="modal-header">
-                <!-- Título del tema se insertará aquí dinámicamente -->
+            <div class="modal-header" id="modalHeader">
+                <!-- Título del tema se inserta dinámicamente -->
                 <h2 id="modalTitle">Título del Tema</h2>
             </div>
-            <!-- Contenido del tema se insertará aquí dinámicamente -->
+            <!-- Contenido del tema se inserta dinámicamente -->
             <div id="modalBody"></div>
         </div>
     </div>
 
-    <!-- Pie de página -->
+    <!-- Pie de página con información institucional -->
     <footer>
         <p>Universidad Central "Marta Abreu" de Las Villas - Licenciatura en Cultura Física</p>
     </footer>
 
     <script>
-        // ===== DECLARACIÓN DE VARIABLES GLOBALES =====
-        // Referencias a elementos DOM que se usarán frecuentemente
-        const topicsContainer = document.getElementById('topicsContainer');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-        const closeModal = document.getElementById('closeModal');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-
-        // ===== ESTRUCTURA DE DATOS DE LOS TEMAS =====
+        // ===== ESTRUCTURA DE DATOS DE TEMAS =====
         // Array que contiene todos los temas con su información completa
+        // Organizado según el plan de estudios proporcionado
         const topics = [
             {
                 id: 1,
                 title: "Introducción a la Morfología",
-                description: "Célula Eucariota, Tejidos Básicos y sus adaptaciones a la actividad física",
+                description: "Célula Eucariota, Tejidos Básicos y adaptaciones",
                 content: `
                     <div class="info-section">
-                        <h3>¿Qué es la Morfología?</h3>
-                        <p>Ciencia que estudia la estructura y forma de los organismos vivos, enfocándose en cómo se relaciona la estructura del cuerpo humano con su función, especialmente durante la actividad física.</p>
+                        <h3>Función</h3>
+                        <p>Estudiar la estructura y forma de los organismos vivos y su relación con la función, especialmente durante la actividad física.</p>
                     </div>
                     <div class="info-section">
-                        <h3>Célula Eucariota</h3>
-                        <p>Unidad básica de la vida con orgánulos especializados:</p>
+                        <h3>Estructura y Localización</h3>
                         <ul>
-                            <li><strong>Núcleo:</strong> Contiene el ADN (material genético)</li>
-                            <li><strong>Mitocondrias:</strong> Producen energía (ATP). Se adaptan aumentando en número y eficiencia con el entrenamiento</li>
-                            <li><strong>Retículo endoplásmico y Aparato de Golgi:</strong> Síntesis y transporte de proteínas</li>
+                            <li><strong>Célula Eucariota:</strong> Unidad básica con orgánulos especializados</li>
+                            <li><strong>Tejidos Básicos:</strong> Epitelial, Conectivo, Muscular, Nervioso</li>
+                            <li><strong>Organización jerárquica:</strong> Células → Tejidos → Órganos → Sistemas</li>
                         </ul>
                     </div>
                     <div class="info-section">
-                        <h3>Diferenciación Celular</h3>
-                        <p>Proceso por el cual las células se especializan para formar diferentes tipos de tejidos.</p>
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Célula como unidad funcional básica</li>
+                            <li>Diferenciación celular para formar tejidos especializados</li>
+                            <li>Principales orgánulos y sus funciones</li>
+                            <li>Adaptaciones celulares a la actividad física</li>
+                        </ul>
                     </div>
                     <div class="info-section">
-                        <h3>Tejidos Básicos</h3>
-                        <p>Grupos de células similares que realizan una función específica:</p>
-                        <ul>
-                            <li><strong>Epitelial:</strong> Revestimiento y protección (ej. piel, interior de órganos)</li>
-                            <li><strong>Conectivo:</strong> Sostén y unión (ej. hueso, sangre, cartílago, grasa)</li>
-                            <li><strong>Muscular:</strong> Contracción y movimiento. Se adapta al ejercicio aumentando fuerza y resistencia</li>
-                            <li><strong>Nervioso:</strong> Transmisión de impulsos nerviosos</li>
-                        </ul>
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Comprender cómo se adaptan las estructuras corporales al ejercicio permite optimizar el entrenamiento y prevenir lesiones.</p>
                     </div>
                 `
             },
             {
                 id: 2,
                 title: "Sistema Nervioso",
-                description: "Clasificación, estructura y función del sistema de control corporal",
+                description: "Estructura, función y niveles de organización",
                 content: `
                     <div class="info-section">
                         <h3>Función</h3>
@@ -348,64 +402,528 @@
                     </div>
                     <div class="info-section">
                         <h3>Estructura y Localización</h3>
-                        <p><strong>Sistema Nervioso Central (SNC):</strong> "Centro de mando". Incluye el Encéfalo y la Médula Espinal.</p>
-                        <p><strong>Sistema Nervioso Periférico (SNP):</strong> "Cableado". Nervios que conectan el SNC con el resto del cuerpo.</p>
-                    </div>
-                    <div class="info-section">
-                        <h3>Niveles de Organización</h3>
                         <ul>
-                            <li><strong>Nivel Medular (Médula Espinal):</strong> Conduce información y genera actos reflejos</li>
-                            <li><strong>Nivel Encefálico Inferior:</strong> Controla funciones básicas (Tronco Cerebral), coordinación (Cerebelo) y regulación (Diencéfalo)</li>
-                            <li><strong>Nivel Cortical (Cerebro):</strong> Centro de funciones superiores (pensamiento, memoria, voluntad)</li>
+                            <li><strong>Sistema Nervioso Central (SNC):</strong> Encéfalo y médula espinal</li>
+                            <li><strong>Sistema Nervioso Periférico (SNP):</strong> Nervios craneales y espinales</li>
+                            <li><strong>Nivel Medular:</strong> Médula espinal - actos reflejos</li>
+                            <li><strong>Nivel Encefálico Inferior:</strong> Tronco cerebral, cerebelo, diencéfalo</li>
+                            <li><strong>Nivel Cortical:</strong> Cerebro - funciones superiores</li>
                         </ul>
                     </div>
                     <div class="info-section">
-                        <h3>Importancia</h3>
-                        <p>Permite la percepción del entorno, el procesamiento de información y la ejecución de respuestas motoras. Es fundamental para el aprendizaje y ejecución de habilidades deportivas.</p>
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Clasificación según estructura y función</li>
+                            <li>Vías de conducción nerviosa sensitivas y motoras</li>
+                            <li>Zonas de la corteza cerebral motora y somestésica</li>
+                            <li>Mecanismos de regulación de funciones orgánicas</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Coordina el movimiento, procesa información sensorial, mantiene el equilibrio y permite el aprendizaje de habilidades motoras.</p>
                     </div>
                 `
             },
-            // Los demás temas siguen la misma estructura...
-            // Por brevedad, solo se muestran los primeros dos temas
+            {
+                id: 3,
+                title: "Sistema Nervioso Vegetativo",
+                description: "Control involuntario de funciones orgánicas",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Controlar funciones involuntarias de órganos y glándulas (ritmo cardíaco, digestión, sudoración).</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Centros de control:</strong> Hipotálamo y tronco encefálico</li>
+                            <li><strong>División simpática:</strong> Preparación para acción</li>
+                            <li><strong>División parasimpática:</strong> Conservación de energía</li>
+                            <li><strong>Sistema entérico:</strong> Red neuronal del intestino</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Control autónomo e inconsciente</li>
+                            <li>Acción antagónica entre simpático y parasimpático</li>
+                            <li>Regulación neuroendocrina integrada</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Adapta las funciones orgánicas al ejercicio: aumenta frecuencia cardíaca, redistribuye flujo sanguíneo, regula temperatura corporal.</p>
+                    </div>
+                `
+            },
+            {
+                id: 4,
+                title: "Sistemas Sensoriales Especiales",
+                description: "Visión, audición y aparato vestibular",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Captar estímulos específicos del ambiente y transformarlos en impulsos nerviosos para su interpretación.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Visión:</strong> Ojos, retina, nervio óptico</li>
+                            <li><strong>Audición:</strong> Oído externo, medio e interno</li>
+                            <li><strong>Aparato vestibular:</strong> Oído interno - equilibrio</li>
+                            <li><strong>Vías de conducción:</strong> Nervios específicos hacia SNC</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Receptores especializados para cada modalidad sensorial</li>
+                            <li>Vías de conducción de estímulos sensitivos especiales</li>
+                            <li>Procesamiento cortical para percepción consciente</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Fundamentales para coordinación, equilibrio, orientación espacial y ejecución precisa de movimientos deportivos.</p>
+                    </div>
+                `
+            },
+            {
+                id: 5,
+                title: "Integración del Sistema Nervioso",
+                description: "Control del tono muscular, equilibrio y postura",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Coordinar todos los niveles del sistema nervioso para el control motor durante la actividad física.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Cerebelo:</strong> Coordinación y precisión motora</li>
+                            <li><strong>Ganglios basales:</strong> Control de movimientos automáticos</li>
+                            <li><strong>Corteza motora:</strong> Planificación y ejecución voluntaria</li>
+                            <li><strong>Propioceptores:</strong> Receptores en músculos y articulaciones</li>
+                            <li><strong>Aparato vestibular:</strong> Equilibrio y orientación espacial</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Interrelación estructural y funcional entre órganos nerviosos</li>
+                            <li>Integración de información sensitiva y motora</li>
+                            <li>Control jerárquico desde médula hasta corteza</li>
+                            <li>Retroalimentación constante para ajuste motor</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Permite movimientos coordinados, mantenimiento del equilibrio, ajuste postural y aprendizaje de habilidades motoras complejas durante la realización de ejercicios físicos.</p>
+                    </div>
+                `
+            },
+            {
+                id: 6,
+                title: "Sistema Endocrino",
+                description: "Regulación hormonal de las funciones corporales",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Regular funciones corporales a largo plazo mediante hormonas: crecimiento, metabolismo, reproducción, respuesta al estrés.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Hipófisis:</strong> Base del cráneo - "glándula maestra"</li>
+                            <li><strong>Tiroides:</strong> Cuello - metabolismo basal</li>
+                            <li><strong>Suprarrenales:</strong> Sobre riñones - respuesta al estrés</li>
+                            <li><strong>Páncreas (mixta):</strong> Abdomen - regulación glucosa</li>
+                            <li><strong>Gónadas:</strong> Producción de hormonas sexuales</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Principales glándulas endocrinas y mixtas</li>
+                            <li>Hormonas específicas y sus funciones</li>
+                            <li>Secreción hormonal a la sangre</li>
+                            <li>Mecanismos de retroalimentación</li>
+                            <li>Control neuro-endocrino integrado</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Coordina adaptaciones metabólicas, crecimiento muscular, utilización de sustratos energéticos y respuesta al entrenamiento.</p>
+                    </div>
+                `
+            },
+            {
+                id: 7,
+                title: "Sistemas de Control",
+                description: "Integración neuroendocrina y homeostasis",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Mantener la homeostasis mediante la integración de los sistemas nervioso (rápido) y endocrino (lento).</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Centro integrador:</strong> Hipotálamo</li>
+                            <li><strong>Componentes:</strong> Receptor, centro de control, efector</li>
+                            <li><strong>Mecanismos:</strong> Retroalimentación negativa y positiva</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Mecanismos de regulación de funciones orgánicas</li>
+                            <li>Retroalimentación negativa (más común)</li>
+                            <li>Retroalimentación positiva (eventos culminantes)</li>
+                            <li>Jerarquía en el control fisiológico</li>
+                            <li>Adaptación a cambios internos y externos</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Permite la adaptación al ejercicio manteniendo la estabilidad interna: temperatura, pH, glucosa, electrolitos.</p>
+                    </div>
+                `
+            },
+            {
+                id: 8,
+                title: "Sistema Circulatorio",
+                description: "Transporte de nutrientes, gases y hormonas",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Transportar oxígeno, nutrientes, hormonas, células inmunitarias y eliminar desechos metabólicos.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Corazón:</strong> Mediastino - bomba muscular</li>
+                            <li><strong>Sistema cardiovascular:</strong> Corazón y vasos sanguíneos</li>
+                            <li><strong>Arterias:</strong> Conductos de salida del corazón</li>
+                            <li><strong>Venas:</strong> Conductos de retorno al corazón</li>
+                            <li><strong>Capilares:</strong> Sitio de intercambio con tejidos</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Particularidades estructurales y funcionales del corazón</li>
+                            <li>Tipos de circulación: mayor (sistémica) y menor (pulmonar)</li>
+                            <li>Regulación de la actividad cardíaca</li>
+                            <li>Presión y flujo sanguíneo regulados</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Aumenta el suministro de oxígeno a músculos activos, redistribuye flujo sanguíneo, regula temperatura corporal durante la práctica de AF.</p>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>Adaptaciones y regulación:</strong> Hipertrofia cardíaca, aumento volumen sanguíneo, mejor capilarización, regulación de la actividad cardíaca durante el ejercicio.
+                    </div>
+                `
+            },
+            {
+                id: 9,
+                title: "Sistema Respiratorio",
+                description: "Intercambio de gases: oxígeno y dióxido de carbono",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Intercambiar gases entre el ambiente y la sangre: captar O₂ y eliminar CO₂.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Componentes:</strong> Vías conductoras y zona de intercambio</li>
+                            <li><strong>Vías conductoras:</strong> Fosas nasales, faringe, laringe, tráquea, bronquios</li>
+                            <li><strong>Pulmones:</strong> Cavidad torácica - órganos de intercambio</li>
+                            <li><strong>Alvéolos:</strong> Unidades funcionales de intercambio gaseoso</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Estructura y función de los componentes</li>
+                            <li>Mecanismos de la respiración</li>
+                            <li>Ventilación pulmonar mecánica</li>
+                            <li>Difusión alveolo-capilar</li>
+                            <li>Transporte de gases en sangre</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Satisface la demanda aumentada de oxígeno durante el ejercicio y elimina el exceso de CO₂ producido.</p>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>Adaptaciones y regulación:</strong> Aumento capacidad pulmonar, mejor eficiencia intercambio, fortalecimiento músculos respiratorios, regulación en la práctica de AF.
+                    </div>
+                `
+            },
+            {
+                id: 10,
+                title: "Integración Cardiorrespiratoria",
+                description: "Interrelación entre control y sistemas cardiorrespiratorio",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Coordinar los sistemas de control con los sistemas cardiorrespiratorio durante la práctica de actividad física.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Centros de control:</strong> Bulbo raquídeo y puente</li>
+                            <li><strong>Quimiorreceptores:</strong> Sensores de O₂, CO₂ y pH</li>
+                            <li><strong>Mecanorreceptores:</strong> Sensores de presión y stretch</li>
+                            <li><strong>Sistema nervioso autónomo:</strong> Regulación simpática y parasimpática</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Interrelación entre sistemas de control y cardiorrespiratorio</li>
+                            <li>Acoplamiento ventilación-perfusión</li>
+                            <li>Regulación por sistema nervioso autónomo</li>
+                            <li>Mecanismos de anticipación y ajuste</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Maximiza la entrega de oxígeno a los músculos activos, fundamental para el rendimiento aeróbico y recuperación durante la práctica de AF.</p>
+                    </div>
+                `
+            },
+            {
+                id: 11,
+                title: "Sistema Digestivo",
+                description: "Procesamiento y absorción de nutrientes",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Transformar los alimentos en nutrientes absorbibles para obtener energía y materiales para el organismo.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Componentes:</strong> Tubo digestivo y glándulas anexas</li>
+                            <li><strong>Tubo digestivo:</strong> Boca, esófago, estómago, intestino delgado y grueso</li>
+                            <li><strong>Glándulas anexas:</strong> Hígado, páncreas, vesícula biliar</li>
+                            <li><strong>Funciones de glándulas anexas:</strong> Producción de jugos digestivos</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Estructura y función de cada componente</li>
+                            <li>Procesos mecánicos y químicos de digestión</li>
+                            <li>Progresión alimentaria a través del tubo digestivo</li>
+                            <li>Absorción selectiva de nutrientes</li>
+                            <li>Funciones específicas de cada glándula anexa</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Proporciona los sustratos energéticos para el ejercicio y los materiales para la reparación y crecimiento muscular.</p>
+                    </div>
+                `
+            },
+            {
+                id: 12,
+                title: "Sistema Urinario",
+                description: "Filtración sanguínea y equilibrio hídrico",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Filtrar la sangre para eliminar desechos, regular el equilibrio hídrico-electrolítico y el pH sanguíneo.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Componentes:</strong> Riñones, uréteres, vejiga, uretra</li>
+                            <li><strong>Riñones:</strong> Región lumbar - filtración y formación de orina</li>
+                            <li><strong>Uréteres:</strong> Conductos hacia vejiga</li>
+                            <li><strong>Vejiga:</strong> Pelvis - almacenamiento de orina</li>
+                            <li><strong>Uretra:</strong> Conducto de eliminación</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Estructura y función de cada componente</li>
+                            <li>Proceso de formación de la orina</li>
+                            <li>Filtración glomerular y reabsorción tubular</li>
+                            <li>Regulación del balance hídrico y electrolítico</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Importancia en Actividad Física</h3>
+                        <p>Mantiene el equilibrio hídrico durante el ejercicio, elimina productos del metabolismo muscular y regula electrolitos.</p>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>Modificaciones durante la AF:</strong> Cambios en el flujo sanguíneo renal, modificaciones en la función renal, ajustes en la formación de orina durante el ejercicio.
+                    </div>
+                `
+            },
+            {
+                id: 13,
+                title: "Integración Control-Digestivo-Urinario",
+                description: "Regulación durante la actividad física",
+                content: `
+                    <div class="info-section">
+                        <h3>Función</h3>
+                        <p>Coordinar la actividad de los sistemas digestivo y urinario con los sistemas de control durante la práctica de actividad física.</p>
+                    </div>
+                    <div class="info-section">
+                        <h3>Estructura y Localización</h3>
+                        <ul>
+                            <li><strong>Centro integrador:</strong> Hipotálamo y tronco encefálico</li>
+                            <li><strong>Sistema nervioso autónomo:</strong> Control de motilidad y secreción</li>
+                            <li><strong>Sistema endocrino:</strong> Regulación hormonal del balance</li>
+                            <li><strong>Receptores:</strong> Osmorreceptores, barorreceptores, quimiorreceptores</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Generalidades</h3>
+                        <ul>
+                            <li>Interrelación entre sistemas de control y sistemas digestivo y urinario</li>
+                            <li>Control neuroendocrino integrado</li>
+                            <li>Mecanismos de adaptación durante el ejercicio</li>
+                            <li>Coordinación de funciones durante el estrés físico</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h3>Interrelaciones durante Actividad Física</h3>
+                        <ul>
+                            <li>Redistribución de flujo sanguíneo desde vísceras hacia músculos activos</li>
+                            <li>Inhibición temporal de procesos digestivos durante ejercicio intenso</li>
+                            <li>Regulación de pérdidas hídricas por sudor y orina</li>
+                            <li>Mantenimiento de equilibrio electrolítico durante el esfuerzo</li>
+                            <li>Adaptación de la función renal al ejercicio</li>
+                            <li>Coordinación entre necesidades energéticas y procesos digestivos</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                id: 14,
+                title: "Medidas Higiénicas en Actividad Física",
+                description: "Recomendaciones para práctica segura y saludable",
+                isHealthMeasure: true,
+                content: `
+                    <div class="info-section highlight">
+                        <h3>Medidas Higiénicas Generales</h3>
+                        <ul>
+                            <li><strong>Calentamiento adecuado:</strong> Preparar el sistema musculoesquelético antes del ejercicio</li>
+                            <li><strong>Enfriamiento progresivo:</strong> Permitir recuperación gradual post-ejercicio</li>
+                            <li><strong>Higiene personal:</strong> Ducha después del ejercicio y ropa limpia</li>
+                            <li><strong>Descanso adecuado:</strong> Respetar períodos de recuperación entre sesiones</li>
+                            <li><strong>Progresión gradual:</strong> Aumentar intensidad y volumen de forma progresiva</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section highlight">
+                        <h3>Medidas para Sistema Nervioso y Sensorial</h3>
+                        <ul>
+                            <li><strong>Protección ocular:</strong> Uso de gafas protectoras en deportes de riesgo</li>
+                            <li><strong>Evitar traumatismos craneales:</strong> Casco en deportes de contacto</li>
+                            <li><strong>Higiene auditiva:</strong> Protección en ambientes ruidosos</li>
+                            <li><strong>Atención a señales de fatiga:</strong> Reconocer límites del sistema nervioso</li>
+                            <li><strong>Entrenamiento progresivo:</strong> Adaptación gradual del sistema neuromuscular</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section highlight">
+                        <h3>Medidas para Sistema Cardiorrespiratorio</h3>
+                        <ul>
+                            <li><strong>Ambiente ventilado:</strong> Ejercicio en espacios con buena circulación de aire</li>
+                            <li><strong>Evitar contaminantes:</strong> No ejercitarse en áreas con alta contaminación</li>
+                            <li><strong>Monitoreo de frecuencia cardíaca:</strong> Control de intensidad del ejercicio</li>
+                            <li><strong>Entrenamiento progresivo:</strong> Adaptación gradual del sistema cardiovascular</li>
+                            <li><strong>Evitar cambios bruscos de temperatura:</strong> Protección contra extremos climáticos</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section highlight">
+                        <h3>Medidas para Sistemas Digestivo y Urinario</h3>
+                        <ul>
+                            <li><strong>Respetar tiempos de digestión:</strong> 2-3 horas después de comidas principales</li>
+                            <li><strong>Hidratación adecuada:</strong> Antes, durante y después del ejercicio</li>
+                            <li><strong>Alimentación equilibrada:</strong> Según tipo e intensidad de actividad</li>
+                            <li><strong>Evitar ejercicio intenso en deshidratación:</strong> Mantener balance hídrico</li>
+                            <li><strong>Recuperación post-ejercicio:</strong> Permitir restablecimiento de funciones digestivas y renales</li>
+                            <li><strong>Progresión alimentaria adecuada:</strong> Según horario de entrenamiento</li>
+                            <li><strong>Atención a señales del cuerpo:</strong> Durante y después de la digestión</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-section highlight">
+                        <h3>Medidas Específicas por Tipo de Actividad</h3>
+                        <ul>
+                            <li><strong>Deportes acuáticos:</strong> Higiene en piscinas, protección auditiva</li>
+                            <li><strong>Deportes de contacto:</strong> Equipamiento protector completo</li>
+                            <li><strong>Actividades al aire libre:</strong> Protección solar, hidratación extra</li>
+                            <li><strong>Ejercicio en altura:</strong> Aclimatación progresiva</li>
+                            <li><strong>Deportes de resistencia:</strong> Nutrición e hidratación estratégicas</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight-box health">
+                        <strong>Recomendación General:</strong> Consultar con profesionales de la salud antes de iniciar cualquier programa de ejercicio, especialmente si existen condiciones médicas preexistentes. La práctica de actividad física debe ser segura, progresiva y adaptada a las características individuales.
+                    </div>
+                `
+            }
         ];
 
-        // ===== FUNCIONES PRINCIPALES =====
+        // ===== REFERENCIAS A ELEMENTOS DEL DOM =====
+        // Almacenamiento de referencias a elementos HTML para manipulación posterior
+        const topicsContainer = document.getElementById('topicsContainer');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const modalHeader = document.getElementById('modalHeader');
+        const closeModal = document.getElementById('closeModal');
+        const loadingOverlay = document.getElementById('loadingOverlay');
 
-        /**
-         * Función para inicializar la aplicación
-         * Se ejecuta cuando el DOM está completamente cargado
-         */
+        // ===== FUNCIÓN DE INICIALIZACIÓN DE LA APLICACIÓN =====
+        // Función principal que se ejecuta al cargar la página
         function initApp() {
-            // Simula un tiempo de carga para mostrar la pantalla de carga
-            // En una aplicación real, aquí podrías cargar datos de una API
+            // Simula tiempo de carga para mostrar la pantalla de carga
             setTimeout(() => {
-                // Oculta la pantalla de carga
                 hideLoadingScreen();
-                // Muestra los temas en la página
                 displayTopics();
-                // Configura los event listeners
                 setupEventListeners();
-            }, 1500); // Simula 1.5 segundos de carga
+            }, 1500);
         }
 
-        /**
-         * Oculta la pantalla de carga y muestra el contenido principal
-         */
+        // ===== FUNCIÓN PARA OCULTAR PANTALLA DE CARGA =====
+        // Transición suave para ocultar la pantalla de carga
         function hideLoadingScreen() {
             loadingOverlay.style.opacity = '0';
             loadingOverlay.style.visibility = 'hidden';
-            // Habilita el scroll en el body
             document.body.style.overflow = 'auto';
         }
 
-        /**
-         * Crea y muestra las tarjetas de temas en el contenedor
-         */
+        // ===== FUNCIÓN PARA MOSTRAR TARJETAS DE TEMAS =====
+        // Crea y muestra dinámicamente todas las tarjetas de temas
         function displayTopics() {
-            // Itera sobre cada tema y crea una tarjeta para él
+            // Itera sobre cada tema en el array topics
             topics.forEach(topic => {
+                // Crea un elemento div para cada tarjeta
                 const topicCard = document.createElement('div');
-                topicCard.className = 'topic-card';
+                
+                // Asigna clases según si es medida higiénica o tema normal
+                if (topic.isHealthMeasure) {
+                    topicCard.className = 'topic-card highlight';
+                } else {
+                    topicCard.className = 'topic-card';
+                }
+                
+                // Establece el contenido HTML de la tarjeta
                 topicCard.innerHTML = `
                     <h2>${topic.title}</h2>
                     <p>${topic.description}</p>
@@ -416,26 +934,25 @@
                     openModal(topic);
                 });
                 
-                // Añade la tarjeta al contenedor
+                // Añade la tarjeta al contenedor principal
                 topicsContainer.appendChild(topicCard);
             });
         }
 
-        /**
-         * Configura todos los event listeners necesarios
-         */
+        // ===== FUNCIÓN PARA CONFIGURAR EVENT LISTENERS =====
+        // Configura todos los event listeners necesarios para la interactividad
         function setupEventListeners() {
-            // Cierra el modal al hacer clic en el botón de cierre
+            // Event listener para cerrar el modal con el botón X
             closeModal.addEventListener('click', closeModalFunc);
             
-            // Cierra el modal al hacer clic fuera del contenido
+            // Event listener para cerrar el modal al hacer clic fuera del contenido
             modalOverlay.addEventListener('click', (e) => {
                 if (e.target === modalOverlay) {
                     closeModalFunc();
                 }
             });
             
-            // Cierra el modal con la tecla Escape
+            // Event listener para cerrar el modal con la tecla Escape
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     closeModalFunc();
@@ -443,30 +960,38 @@
             });
         }
 
-        /**
-         * Abre el modal y muestra la información del tema seleccionado
-         * @param {Object} topic - El objeto tema con toda su información
-         */
+        // ===== FUNCIÓN PARA ABRIR MODAL =====
+        // Abre el modal y muestra la información del tema seleccionado
         function openModal(topic) {
-            // Establece el título y contenido del modal
+            // Establece el título del modal
             modalTitle.textContent = topic.title;
+            // Establece el contenido del modal
             modalBody.innerHTML = topic.content;
-            // Muestra el modal
+            
+            // Aplica estilos especiales si es el tema de medidas higiénicas
+            if (topic.isHealthMeasure) {
+                modalHeader.className = 'modal-header highlight';
+            } else {
+                modalHeader.className = 'modal-header';
+            }
+            
+            // Activa el modal añadiendo la clase active
             modalOverlay.classList.add('active');
             // Deshabilita el scroll del body para evitar doble scroll
             document.body.style.overflow = 'hidden';
         }
 
-        /**
-         * Cierra el modal y restaura el scroll del body
-         */
+        // ===== FUNCIÓN PARA CERRAR MODAL =====
+        // Cierra el modal y restaura el scroll del body
         function closeModalFunc() {
+            // Desactiva el modal removiendo la clase active
             modalOverlay.classList.remove('active');
+            // Habilita el scroll del body
             document.body.style.overflow = 'auto';
         }
 
         // ===== INICIALIZACIÓN DE LA APLICACIÓN =====
-        // Espera a que el DOM esté completamente cargado antes de inicializar la app
+        // Espera a que el DOM esté completamente cargado antes de inicializar
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
